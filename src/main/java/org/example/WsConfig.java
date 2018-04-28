@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.aspect.PersistentAspect;
 import org.springframework.aop.support.AopUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -20,6 +21,9 @@ import org.springframework.xml.xsd.XsdSchema;
 @EnableWs
 @Configuration
 public class WsConfig extends WsConfigurerAdapter {
+
+	@Autowired
+	private CustomValidatingInterceptor interceptor;
 
     @Bean
     public ServletRegistrationBean messageDispatcherServlet(ApplicationContext applicationContext) {
@@ -45,9 +49,12 @@ public class WsConfig extends WsConfigurerAdapter {
     @Override
     public void addInterceptors(List<EndpointInterceptor> interceptors) {
         // aop not working
-        interceptors.add(new CustomValidatingInterceptor(schema(), config()));
+		//interceptors.add(new CustomValidatingInterceptor(schema(), config()));
         // aop working
         // interceptors.add(new CustomValidatingInterceptor(schema(), null));
+
+		// Allowing Spring to autowire
+		interceptors.add(interceptor);
     }
 
     @Bean

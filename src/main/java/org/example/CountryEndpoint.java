@@ -1,5 +1,6 @@
 package org.example;
 
+import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
@@ -23,6 +24,8 @@ public class CountryEndpoint {
 
         System.out.println("11111111111111111");
 
+		System.out.println("is config aop proxy in getCountry(): " +
+				AopUtils.isAopProxy(config));
         config.setNum(11);
 
         return response;
